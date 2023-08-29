@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 import csv
 
 # Домен, который мы парсим и страница
-HOST = 'https://finuslugi.ru'
-URL = 'https://finuslugi.ru/kreditnye_karty'
+HOST = 'https://bankiros.ru/'
+URL = 'https://bankiros.ru/credit-cards'
 
 # Отдаём загаловки, для того, чтобы ресурс не подумал, что мы боты.
 HEADERS = {
@@ -23,3 +23,23 @@ def get_html(url, params=''):
 # отладка
 html = get_html(URL)
 print(html)
+
+#Получаем контент с html
+def get_content(html):
+    # Получаем объект страницы
+    soup = BeautifulSoup(html, 'html.parser')
+    #парсим блоки карт
+    items = soup.select('tbody > tr')
+    cards = []
+    # for item in items:
+    #     cards.append(
+    #         {
+    #             #'h4': item.find('h4').get_text(),
+    #             'title': item.find('div', class_='commercial-desc')
+    #         }
+    #     )
+    # return cards
+    print(items)
+# отладка
+html = get_html(URL)
+get_content(html.text)
