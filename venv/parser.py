@@ -6,18 +6,20 @@ from bs4 import BeautifulSoup
 import csv
 
 # Домен, который мы парсим и страница
-HOST = 'https://www.vbr.ru/'
-URL = 'https://www.vbr.ru/banki/kreditnyekarty/'
+HOST = 'https://finuslugi.ru'
+URL = 'https://finuslugi.ru/kreditnye_karty'
 
 # Отдаём загаловки, для того, чтобы ресурс не подумал, что мы боты.
 HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+    'user-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
 }
 
 # Функция, которая получает html
 def get_html(url, params=''):
     r = requests.get(url, headers=HEADERS, params=params)
+    #f = requests.
     return r
+# отладка
 html = get_html(URL)
 print(html)
