@@ -56,13 +56,18 @@ def parser():
     PAGINATION = int(PAGINATION)
     html = get_html(URL)
     if html.status_code == 200:
+        cards = []
         # Циклом проходим по страницам и парсим каждую, подставляя в params счетчик (номер страницы)
         for i in range(1, PAGINATION+1):
             print(f'Парсинг страницы: {i}')
             html = get_html(URL, params=f'page={i}')
-            print(get_content(html.text))
+            # добавляем в словарь cards полученный контент со страницы
+            cards.extend(get_content(html.text))
+            # print(get_content(html.text))
+        print(cards)
+        print(f'Парсинг завершился! Получино страниц: {i}')
     else:
         print('Error')
-    return html
+    #return html
 
 print(parser())
