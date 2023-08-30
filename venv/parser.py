@@ -53,14 +53,14 @@ def get_content(html):
 # функция сохранения файла в папку проекта. 1.То, что мы хотим сохранить. 2. Путь, куда мы сохраняем
 def save_doc(items, path):
     # Окрываем файл. Кидаем путь. Какой формат работы с файлом (w - чтение и запись). Новая str по-умолчанию пустая
-    with open(path, 'w', newline='') as file:
+    with open(path, 'w', newline='', encoding="utf-8") as file:
         # Используем переменную в которую присваем данные и работаем с данными нашего модуля CSV
         writer = csv.writer(file, delimiter=';')
         # Задаем первую строку методом writerow. Прописываем заголовки.
         writer.writerow(['Название карты', 'ссылка на карту', 'Банк', 'Изображение карты'])
         # Циклом наполняем строки
         for item in items:
-            writer.writerow([item['title'], item['link_product'], item['brand'], item['img_card']])
+            writer.writerow( [item['title'], item['link_product'], item['brand'], item['img_card']])
 def parser():
     # Получать кол-во пагинации
     PAGINATION = input('Укажите кол-во страниц для парсинга: ')
@@ -77,10 +77,10 @@ def parser():
             # print(get_content(html.text))
             # интегрируем сохранение файла
             save_doc(cards, CSV)
-        print(cards)
+        #print(cards)
         print(f'Парсинг завершился! Получино страниц: {i}')
     else:
         print('Error')
     #return html
 
-print(parser())
+parser()
