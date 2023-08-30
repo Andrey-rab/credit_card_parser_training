@@ -35,8 +35,8 @@ def get_content(html):
         # асоциативный словарь. Здесь показываем, что будем собирать
         cards.append(
             {
-                #'h4': item.find('h4').get_text(),
-                'title': item.find('div', class_='xxx-listing-card__title-wrap').get_text(),
+                # strip=True удаляет лишние пробелы
+                'title': item.find('div', class_='xxx-listing-card__title-wrap').get_text(strip=True),
                 'link_product': item.find('div', class_='xxx-listing-card__title-wrap').find('a').get('href'),
                 'brand': item.find('div', class_='xxx-listing-card__title-wrap').find('span').get_text(),
                 #'img_card': item.find('div', class_='xxx-listing-card__img').find('img').get('src'),
@@ -46,6 +46,23 @@ def get_content(html):
     return cards
     #print(items)
 # отладка
-html = get_html(URL)
-content = get_content(html.text)
-print(content)
+# html = get_html(URL)
+# content = get_content(html.text)
+# print(content)
+
+def parser():
+    # Получать кол-во пагинации
+    PAGINATION = input('Укажите кол-во страниц для парсинга: ')
+    PAGINATION = int(PAGINATION)
+    html = get_html(URL)
+    if html.status_code == 200:
+        # Циклом проходим по страницам и парсим каждую, подставляя в params счетчик (номер страницы)
+        for i in range(1, PAGINATION+1):
+            print(f'Парсинг страницы: {i}')
+            html = get_html(URL, params=f'page={i}')
+            print(get_content(html.text))
+    else:
+        print('Error')
+    return html
+
+print(parser())
