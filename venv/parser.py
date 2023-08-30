@@ -8,12 +8,12 @@ import csv
 # Домен, который мы парсим и страница
 HOST = 'https://bankiros.ru/'
 URL = 'https://bankiros.ru/credit-cards'
-
 # Отдаём загаловки, для того, чтобы ресурс не подумал, что мы боты.
 HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
     'user-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
 }
+CSV = 'cards.csv'
 
 # Функция, которая получает html
 def get_html(url, params=''):
@@ -50,6 +50,17 @@ def get_content(html):
 # content = get_content(html.text)
 # print(content)
 
+# функция сохранения файла в папку проекта. 1.То, что мы хотим сохранить. 2. Путь, куда мы сохраняем
+def save_doc(items, path):
+    # Окрываем файл. Кидаем путь. Какой формат работы с файлом (w - чтение и запись). Новая str по-умолчанию пустая
+    with open(path, 'w', newline='') as file:
+        # Используем переменную в которую присваем данные и работаем с данными нашего модуля CSV
+        writer = csv.writer(file, delimiter=';')
+        # Задаем первую строку методом writerow. Прописываем заголовки.
+        writer.writerow(['Название карты', 'ссылка на карту', 'Банк', 'Изображение карты'])
+        # Циклом наполняем строки
+        for item in items:
+            writer.writerow([item['title'], item['link_product'], item['brand'], item['img_card']])
 def parser():
     # Получать кол-во пагинации
     PAGINATION = input('Укажите кол-во страниц для парсинга: ')
@@ -64,6 +75,8 @@ def parser():
             # добавляем в словарь cards полученный контент со страницы
             cards.extend(get_content(html.text))
             # print(get_content(html.text))
+            # интегрируем сохранение файла
+            save_doc(cards, CSV)
         print(cards)
         print(f'Парсинг завершился! Получино страниц: {i}')
     else:
